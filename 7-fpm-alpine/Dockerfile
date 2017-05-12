@@ -3,6 +3,7 @@ ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
 RUN set -x \
 	&& apk add --update --no-cache git imap-dev libmemcached \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS $MEMCACHED_DEPS openssl-dev libtool \
+	&& pecl channel-update pecl.php.net \
 	&& pecl install xdebug mongodb intl zip redis apcu \
 	&& docker-php-ext-install pdo_mysql zip sockets \
 	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets
