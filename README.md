@@ -1,6 +1,6 @@
 # php7-composer-docker-image
 
-php7 installed on to of an Alpine base image.
+php7 installed on top of an Alpine base image.
 
 Additional modules (check with php -m for aomplete list)
 
