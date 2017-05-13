@@ -6,7 +6,7 @@ if [ -n "${XDEBUG_CONFIG}" ] ; then
     if [ -n "${PHP_IDE_CONFIG}" ] ; then
     # PHP_IDE_CONFIG="serverName=some-server"
         (echo "${PHP_IDE_CONFIG}" | grep -q serverName) || echo "Warning: PHP_IDE_CONFIG does NOT contain serverName=..."
-    endif
+    fi
 
     (echo "${XDEBUG_CONFIG}" | grep -q remote_host) && (echo "${XDEBUG_CONFIG}" | grep -q remote_enable) || echo "XDEBUG_CONFIG MUST contain remote_host=... and remote_enable=1"
 
