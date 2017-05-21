@@ -21,6 +21,9 @@ RUN set -x \
 	&& touch /usr/local/etc/php/conf.d/xdebug.ini \
 	&& chmod a+w /usr/local/etc/php/conf.d/xdebug.ini \
 	&& php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer \
+	&& echo \
+	&& curl -sL https://github.com/clue/phar-composer/releases/download/v1.0.0/phar-composer.phar -o /usr/local/bin/phar-composer \
+	&& chmod a+x /usr/local/bin/phar-composer \
 	&& echo
 
 ADD entrypoint.sh /
