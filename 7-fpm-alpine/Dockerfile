@@ -5,9 +5,9 @@ RUN set -x \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS $MEMCACHED_DEPS openssl-dev libtool pcre-dev libpng-dev \
 	&& echo \
 	&& pecl channel-update pecl.php.net \
-	&& pecl install xdebug mongodb intl zip redis apcu \
+	&& pecl install xdebug mongodb intl zip redis apcu msgpack \
 	&& docker-php-ext-install pdo_mysql zip sockets gd \
-	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd \
+	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack \
 	&& echo \
 	&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
     && docker-php-ext-configure /usr/src/php/ext/memcached --disable-memcached-sasl \
