@@ -1,4 +1,4 @@
-FROM php:7.1.4-fpm-alpine
+FROM php:7.1.6-fpm-alpine
 ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
 RUN set -x \
 	&& apk add --update --no-cache git imap-dev libmemcached libpng \
