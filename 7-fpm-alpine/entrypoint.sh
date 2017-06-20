@@ -19,9 +19,6 @@ if [ "$1" == "php" ] ; then
         echo "#zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
         echo "XDEBUG_CONFIG empty. xdebug DISABLED"
     fi
-elif [ "$1" == "phar-composer" ] ; then
-    shift
-    set -- php -d phar.readonly=off /usr/local/bin/phar-composer "$@"
 fi
 
 echo "Now running '$@'" 

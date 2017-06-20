@@ -1,5 +1,6 @@
 FROM php:7.1.6-fpm-alpine
 ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
+ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
 	&& apk add --update --no-cache git imap-dev libmemcached libpng icu \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS $MEMCACHED_DEPS openssl-dev \
@@ -24,12 +25,10 @@ RUN set -x \
 	&& touch /usr/local/etc/php/conf.d/xdebug.ini \
 	&& chmod a+w /usr/local/etc/php/conf.d/xdebug.ini \
 	&& php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer \
-	&& echo \
-	&& curl -sL https://github.com/clue/phar-composer/releases/download/v1.0.0/phar-composer.phar -o /usr/local/bin/phar-composer \
-	&& chmod a+x /usr/local/bin/phar-composer \
 	&& echo
 
-ADD entrypoint.sh /
+COPY entrypoint.sh /
+COPY etc/* /usr/local/etc/php/*
 
 EXPOSE 9000
 ENTRYPOINT [ "/entrypoint.sh" ]
