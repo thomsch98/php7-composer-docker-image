@@ -28,7 +28,7 @@ RUN set -x \
 	&& echo
 
 COPY entrypoint.sh /
-COPY etc/* /usr/local/etc/php/*
+COPY etc/* /usr/local/etc/php/
 
 EXPOSE 9000
 ENTRYPOINT [ "/entrypoint.sh" ]

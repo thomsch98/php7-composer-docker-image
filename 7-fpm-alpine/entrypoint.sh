@@ -1,8 +1,14 @@
-#!/bin/sh
+#!/bin/ash
 
 set -e
 
 if [ "$1" == "php" ] ; then
+    if [ -n "${PHP_INI}" ] ; then
+        shift
+        set -- php -c "${PHP_INI}" "$@"
+        echo "PHP_INI='${PHP_INI}'. Using as configuration file."
+    fi
+
     if [ -n "${XDEBUG_CONFIG}" ] ; then
     # XDEBUG_CONFIG="remote_host=172.17.0.1 remote_enable=1"
 
