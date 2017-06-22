@@ -4,7 +4,21 @@ ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
 	&& apk add --update --no-cache git imap-dev libmemcached libpng icu \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS $MEMCACHED_DEPS openssl-dev \
-		libtool pcre-dev libpng-dev icu-dev \
+		libtool pcre-dev libpng-dev icu-dev python \
+	&& echo \
+	&& ( \
+		git clone https://github.com/edenhill/librdkafka.git /usr/src/librdkafka \
+		&& cd /usr/src/librdkafka \
+		&& ./configure --prefix=/usr \
+		&& make -j "$(getconf _NPROCESSORS_ONLN)" \
+		&& make install \
+	    && rm -rf /usr/src/librdkafka \
+		) \
+	&& echo \
+	&& git clone https://github.com/arnaud-lb/php-rdkafka.git /usr/src/php/ext/php-rdkafka \
+    && docker-php-ext-configure /usr/src/php/ext/php-rdkafka \
+    && docker-php-ext-install /usr/src/php/ext/php-rdkafka \
+    && rm -rf /usr/src/php/ext/php-rdkafka \
 	&& echo \
 	&& docker-php-ext-install pdo_mysql intl zip sockets gd \
 	&& echo \
@@ -18,7 +32,7 @@ RUN set -x \
 	&& echo \
 	&& pecl channel-update pecl.php.net \
 	&& pecl install xdebug mongodb redis apcu msgpack \
-	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack intl \
+	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack intl rdkafka \
 	&& echo \
 	&& apk del .phpize-deps \
 	&& echo \
