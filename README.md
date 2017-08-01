@@ -2,7 +2,7 @@
 
 php7 installed on top of an Alpine base image.
 
-Additional modules (check with php -m for aomplete list)
+Additional modules (check with php -m for a complete list)
 
 - xdebug 
 - mongodb 
@@ -13,6 +13,7 @@ Additional modules (check with php -m for aomplete list)
 - pdo_mysql
 - sockets
 - opcache
+- soap
 
 Special about this repo, if anything, is the entrypoint.sh file.
 If the environment variable XDEBUG_CONFIG is set, the xdebug extension is enabled at container startup 
