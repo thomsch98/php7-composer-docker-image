@@ -1,4 +1,4 @@
-FROM php:7.1.7-fpm-alpine
+FROM php:7.1.8-fpm-alpine
 ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
