@@ -1,10 +1,10 @@
 FROM php:7.1.8-fpm-alpine
-ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
-	&& apk add --update --no-cache git imap-dev libmemcached libpng icu libxml2 \
-	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS $MEMCACHED_DEPS openssl-dev libxml2-dev \
-		libtool pcre-dev libpng-dev icu-dev python \
+	&& apk add --update --no-cache libmemcached libpng icu libxml2 \
+	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
+		zlib-dev libmemcached-dev cyrus-sasl-dev openssl-dev libxml2-dev pcre-dev libpng-dev imap-dev icu-dev \
+		libtool python git \
 	&& echo \
 	&& ( \
 		git clone https://github.com/edenhill/librdkafka.git /usr/src/librdkafka \
