@@ -39,6 +39,9 @@ RUN set -x \
 	&& touch /usr/local/etc/php/conf.d/xdebug.ini \
 	&& chmod a+w /usr/local/etc/php/conf.d/xdebug.ini \
 	&& php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer \
+	&& echo \
+	&& mkdir /app \
+	&& chown 1000:1000 /app \
 	&& echo
 
 COPY entrypoint.sh /
@@ -46,7 +49,6 @@ COPY etc/* /usr/local/etc/php/
 
 EXPOSE 9000
 ENTRYPOINT [ "/entrypoint.sh" ]
-VOLUME [ "/app" ]
 WORKDIR /app
 ENV HOME=/app
 USER 1000:1000
