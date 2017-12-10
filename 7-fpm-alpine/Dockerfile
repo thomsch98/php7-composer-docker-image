@@ -1,4 +1,4 @@
-FROM php:7.1.12-fpm-alpine
+FROM php:7.2.0-fpm-alpine
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
 	&& apk add --update --no-cache libmemcached libpng icu libxml2 git c-client \
@@ -20,7 +20,7 @@ RUN set -x \
     && docker-php-ext-install /usr/src/php/ext/php-rdkafka \
     && rm -rf /usr/src/php/ext/php-rdkafka \
 	&& echo \
-	&& docker-php-ext-install pdo_mysql intl zip sockets gd soap \
+	&& docker-php-ext-install pdo_mysql intl zip sockets gd soap exif \
 	&& echo \
 	&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
     && docker-php-ext-configure /usr/src/php/ext/memcached --disable-memcached-sasl \
@@ -32,7 +32,7 @@ RUN set -x \
 	&& echo \
 	&& pecl channel-update pecl.php.net \
 	&& pecl install xdebug mongodb redis apcu msgpack \
-	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack intl rdkafka soap \
+	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack intl rdkafka soap exif \
 	&& echo \
 	&& apk del .phpize-deps \
 	&& echo \
