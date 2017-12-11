@@ -1,10 +1,17 @@
 FROM php:7.1.12-fpm-alpine
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
-	&& apk add --update --no-cache libmemcached libpng icu libxml2 git c-client \
+	&& apk add --update --no-cache libmemcached freetype libpng libjpeg-turbo icu libxml2 git c-client \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
-		zlib-dev libmemcached-dev cyrus-sasl-dev openssl-dev libxml2-dev pcre-dev libpng-dev imap-dev icu-dev \
+		zlib-dev libmemcached-dev cyrus-sasl-dev openssl-dev libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev pcre-dev imap-dev icu-dev \
 		libtool python \
+	&& echo \
+	&& docker-php-ext-configure gd \
+			--with-gd \
+			--with-freetype-dir=/usr/include/ \
+			--with-png-dir=/usr/include/ \
+			--with-jpeg-dir=/usr/include/ \
+	&& docker-php-ext-install gd \
 	&& echo \
 	&& ( \
 		git clone https://github.com/edenhill/librdkafka.git /usr/src/librdkafka \
@@ -20,7 +27,7 @@ RUN set -x \
     && docker-php-ext-install /usr/src/php/ext/php-rdkafka \
     && rm -rf /usr/src/php/ext/php-rdkafka \
 	&& echo \
-	&& docker-php-ext-install pdo_mysql intl zip sockets gd soap exif \
+	&& docker-php-ext-install pdo_mysql intl zip sockets soap exif \
 	&& echo \
 	&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
     && docker-php-ext-configure /usr/src/php/ext/memcached --disable-memcached-sasl \
