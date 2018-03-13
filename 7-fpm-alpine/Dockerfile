@@ -1,4 +1,4 @@
-FROM php:7.1.12-fpm-alpine
+FROM php:7.1.15-fpm-alpine
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
 	&& apk add --update --no-cache libmemcached freetype libpng libjpeg-turbo icu libxml2 git c-client \
