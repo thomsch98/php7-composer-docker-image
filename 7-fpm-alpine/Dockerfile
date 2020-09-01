@@ -1,16 +1,15 @@
-FROM php:7.1.15-fpm-alpine
+FROM php:7.4.9-fpm-alpine
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN set -x \
-	&& apk add --update --no-cache libmemcached freetype libpng libjpeg-turbo icu libxml2 git c-client \
+	&& apk add --update --no-cache libmemcached freetype libpng libjpeg-turbo icu libxml2 git c-client libzip \
 	&& apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
-		zlib-dev libmemcached-dev cyrus-sasl-dev openssl-dev libxml2-dev freetype-dev libpng-dev libjpeg-turbo-dev pcre-dev imap-dev icu-dev \
-		libtool python \
+		zlib-dev libmemcached-dev cyrus-sasl-dev openssl-dev libxml2-dev freetype-dev libpng-dev libzip-dev libjpeg-turbo-dev pcre-dev imap-dev icu-dev \
+		libtool python3 \
 	&& echo \
 	&& docker-php-ext-configure gd \
-			--with-gd \
-			--with-freetype-dir=/usr/include/ \
-			--with-png-dir=/usr/include/ \
-			--with-jpeg-dir=/usr/include/ \
+			--enable-gd \
+			--with-freetype \
+			--with-jpeg \
 	&& docker-php-ext-install gd \
 	&& echo \
 	&& ( \
@@ -29,17 +28,19 @@ RUN set -x \
 	&& echo \
 	&& docker-php-ext-install pdo_mysql intl zip sockets soap exif \
 	&& echo \
-	&& git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-    && docker-php-ext-configure /usr/src/php/ext/memcached --disable-memcached-sasl \
+	&& pecl channel-update pecl.php.net \
+	&& pecl install igbinary msgpack \
+	&& echo \
+	&& git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
+    && docker-php-ext-configure /usr/src/php/ext/memcached --enable-memcached-igbinary --enable-memcached-msgpack \
     && docker-php-ext-install /usr/src/php/ext/memcached \
     && rm -rf /usr/src/php/ext/memcached \
 	&& echo \
 	&& docker-php-ext-configure imap --with-imap --with-imap-ssl \
 	&& docker-php-ext-install imap \
 	&& echo \
-	&& pecl channel-update pecl.php.net \
-	&& pecl install xdebug mongodb redis apcu msgpack \
-	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd msgpack intl rdkafka soap exif \
+	&& pecl install xdebug mongodb redis apcu \
+	&& docker-php-ext-enable mongodb opcache zip redis apcu sockets gd igbinary msgpack intl rdkafka soap exif \
 	&& echo \
 	&& apk del .phpize-deps \
 	&& echo \
